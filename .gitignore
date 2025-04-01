@@ -1,5 +1,6 @@
 /.phpunit.cache
 /build
+/docs/v1/*.json
 /vendor
 .phpunit.result.cache
 composer.lock
