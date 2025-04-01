@@ -8,6 +8,9 @@ on:
     - cron: '30 * * * *'  # 毎時0分に実行
   workflow_dispatch:  # 手動実行も可能
 
+permissions:
+  contents: write  # 🔹 ここを追加
+
 jobs:
   generate-json:
     runs-on: ubuntu-latest
@@ -30,4 +33,6 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add output.json
           git commit -m "Update output.json [skip ci]" || exit 0
-          git push
+          git push origin HEAD
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
