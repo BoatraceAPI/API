@@ -1,0 +1,45 @@
+name: Cron
+
+on:
+  push:
+    branches:
+      - gh-pages
+  schedule:
+    - cron: '30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Composer
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Scrape Data
+        run: php scraper_v1.php
+
+      - name: Deploy JSON
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          FILES=$(git ls-files --modified --others --exclude-standard | grep '\.json$' || true)
+          if [ -n "$FILES" ]; then
+            git add $FILES
+            git commit -m "Update JSON files [skip ci]" || exit 0
+            git push origin HEAD
+          else
+            echo "No JSON changes to commit."
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
