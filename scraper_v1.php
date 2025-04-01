@@ -19,6 +19,4 @@ foreach (array_values($programs) as $data) {
 }
 
 $name = 'docs/v1/' . $date->format('Ymd') . '.json';
-file_put_contents($name, json_encode([
-    'programs' => $newPrograms,
-], JSON_PRETTY_PRINT));
+file_put_contents($name, json_encode(['programs' => $newPrograms]));
