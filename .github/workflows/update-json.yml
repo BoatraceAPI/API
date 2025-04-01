@@ -1,6 +1,9 @@
 name: Generate JSON and Commit
 
 on:
+  push:
+    branches:
+      - gh-pages
   schedule:
     - cron: '30 * * * *'  # 毎時0分に実行
   workflow_dispatch:  # 手動実行も可能
