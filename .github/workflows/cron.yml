@@ -5,7 +5,7 @@ on:
     branches:
       - gh-pages
   schedule:
-    - cron: '30 * * * *'
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -33,7 +33,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          FILES=$(git ls-files --modified --others --exclude-standard | grep '\.json$' || true)
+          FILES=$(git ls-files --modified --others --exclude-standard | grep 'docs\\v1\\\.json$' || true)
           if [ -n "$FILES" ]; then
             git add $FILES
             git commit -m "Update JSON files [skip ci]" || exit 0
