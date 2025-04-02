@@ -7,7 +7,7 @@ require __DIR__ . '/vendor/autoload.php';
 use BVP\BoatraceScraper\Scraper;
 use Carbon\CarbonImmutable as Carbon;
 
-$date = Carbon::today();
+$date = Carbon::today('Asia/Tokyo');
 $programs = Scraper::scrapePrograms($date);
 
 $newPrograms = [];
@@ -16,6 +16,10 @@ foreach (array_values($programs) as $data) {
         $program['boats'] = array_values($program['boats']);
         $newPrograms[] = $program;
     }
+}
+
+if (empty($newPrograms)) {
+    exit;
 }
 
 $name = 'docs/v1/' . $date->format('Ymd') . '.json';
